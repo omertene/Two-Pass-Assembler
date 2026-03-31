@@ -1,7 +1,9 @@
 CC = gcc
-CFLAGS = -Wall -ansi -pedantic 
+CFLAGS = -Wall -ansi -pedantic -Iinclude
 TARGET = assembler
-SRCS = assembler.c pre_processor.c first_pass.c second_pass.c symbol_table.c output_generator.c utils.c
+
+# Path to source files
+SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
 
 all: $(TARGET)
@@ -9,8 +11,9 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-%.o: %.c
+# Rule for compiling .c files into .o files
+src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET) $(OBJS) *.am *.ob *.ent *.ext
+	rm -f $(TARGET) src/*.o tests/*.am tests/*.ob tests/*.ent tests/*.ext
